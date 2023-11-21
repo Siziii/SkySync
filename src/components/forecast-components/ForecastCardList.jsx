@@ -16,7 +16,7 @@ const ForecastCardList = ({ weather }) => {
             <div
                 ref={ref}
                 {...events}
-                className="flex gap-3 overflow-hidden cursor-grab"
+                className="flex gap-3 overflow-auto cursor-grab hidescroll"
             >
 
                 {forecastList.map((forecastItem, index) => {

@@ -1,12 +1,12 @@
-import { FaArrowDown, FaArrowUp, FaCloud } from "react-icons/fa";
+import { FaCloud } from "react-icons/fa";
 
 const ForeCastMain = ({weather, city}) => {
     const { tempCelsius, country, feels_likeCelsius,description, formattedTime,formattedDate} = weather;
 
     return ( 
         <div className="flex flex-col w-full h-full gap-3">
-            <div className="flex gap-3">
-                <div className="bg-widget-light border-2 rounded-lg border-widget-light-s w-full flex items-center justify-center">
+            <div className="flex flex-col sm:flex-row gap-3">
+                <div className="bg-widget-light border-2 rounded-lg border-widget-light-s w-full flex items-center justify-center py-3">
                     <h1 className="text-2xl font-semibold capitalize">{city}, {country}</h1>
                 </div>
                 <div className="bg-widget-light border-2 rounded-lg border-widget-light-s py-3 px-6">

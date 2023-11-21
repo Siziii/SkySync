@@ -3,29 +3,31 @@ import ForecastCardList from "./forecast-components/ForecastCardList";
 import ForeCastMain from "./forecast-components/ForecastMain";
 import ForecastSide from "./forecast-components/ForecastSide";
 import { useState, useEffect } from "react";
-const Forecast = () => {
-    const [query, setQuery] = useState({ q: "berlin" });
+
+const Forecast = ({city}) => {
     const [weather, setWeather] = useState(null);
 
     useEffect(() => {
         const fetchWeather = async () => {
-            await getFormattedWeatherData({ ...query }).then((data) => {
+            await getFormattedWeatherData({ q:city }).then((data) => {
                 setWeather(data);
             });
         };
         fetchWeather();
-    }, [query]);
+    }, []);
+
+
     return (
         <div className="flex flex-col w-full bg-widget-dark border-2 rounded-lg border-widget-dark-s p-3">
-            <div className="w-full flex gap-3">
-                <div className="w-1/2">
+            <div className="w-full flex flex-col sm:flex-row gap-3">
+                <div className="w-full sm:w-1/2">
                     {weather ? (
-                        <ForeCastMain weather={weather} city={query.q} />
+                        <ForeCastMain weather={weather} city={city} />
                     ) : (
                         <p>Loading...</p>
                     )}
                 </div>
-                <div className="w-1/2">
+                <div className="w-full sm:w-1/2">
                     {weather ? (
                         <ForecastSide weather={weather} />
                     ) : (

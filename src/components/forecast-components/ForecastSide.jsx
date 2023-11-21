@@ -1,5 +1,4 @@
-import { FaArrowDown, FaArrowUp, FaCloud, FaCloudSunRain, FaCompass, FaWater, FaWind } from "react-icons/fa";
-import {BsFillSunriseFill, BsFillSunsetFill} from "react-icons/bs"
+import { FaArrowDown, FaArrowUp, FaCompass, FaWater, FaWind } from "react-icons/fa";
 import { WiBarometer, WiSunrise, WiSunset } from "react-icons/wi";
 
 const ForecastSide = ({weather}) => {
