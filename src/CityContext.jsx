@@ -4,7 +4,7 @@ const CityContext = createContext();
 
 export const CityProvider = ({ children }) => {
   const [cities, setCities] = useState(["berlin","zagreb"]);
-  
+
   const addCity = (city) => {
     setCities([...cities, city]);
   }
@@ -14,7 +14,7 @@ export const CityProvider = ({ children }) => {
   };
 
   return (
-    <CityContext.Provider value={{ cities, addCity }}>
+    <CityContext.Provider value={{ cities,setCities, addCity, deleteCity }}>
       {children}
     </CityContext.Provider>
   )
