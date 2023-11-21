@@ -3,11 +3,17 @@ import { createContext, useContext, useState } from 'react';
 const CityContext = createContext();
 
 export const CityProvider = ({ children }) => {
-  const [cities, setCities] = useState(["berlin","zagreb"]);
+  const [cities, setCities] = useState([
+    { id: 1, name: "Berlin" },
+    { id: 2, name: "Zagreb" },
+  ]);
 
-  const addCity = (city) => {
-    setCities([...cities, city]);
-  }
+  const addCity = (cityName) => {
+    const newId = new Date().getTime();
+    const newCity = { id: newId, name: cityName };
+    setCities([...cities, newCity]);
+  };
+
   const deleteCity = (city) => {
     const updatedCities = cities.filter((c) => c !== city);
     setCities(updatedCities);

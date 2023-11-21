@@ -64,6 +64,7 @@ const formatForecastWeather = (data) => {
             time: formatToLocalTime(d.dt, timezone, "hh:mm a"),
             temp: Math.round(d.main.temp - 273.15),
             desc: d.weather[0].main,
+            id: d.weather[0].id,
         };
     });
     return { timezone, forecastList };

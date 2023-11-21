@@ -1,33 +1,33 @@
 import { useRef, useState } from "react";
 import { useCityContext } from "../CityContext";
-
-
+import { DragDropContext, Draggable } from "react-beautiful-dnd";
+import { StrictModeDroppable as Droppable } from "../helpers/StrictModeDroppable";
 const Cities = () => {
-    const { cities,setCities, addCity } = useCityContext();
+    const { cities, setCities, addCity } = useCityContext();
     const [inputValue, setInputValue] = useState('');
-
-    const dragCity = useRef(0);
-    const draggedOverCity = useRef(0);
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        addCity(inputValue);
-        setInputValue('');
-        console.log(cities)
+        const trimmedCityName = inputValue.trim();
+        if (trimmedCityName && !cities.some(city => city.name.toLowerCase() === trimmedCityName.toLowerCase())) {
+            addCity(trimmedCityName);
+            setInputValue('');
+          } else {
+            console.log("City name is empty or already exists.");
+          }
+    };
+    const onDragEnd = (result) => {
+        if (!result.destination) return;
+
+        const reorderedCities = Array.from(cities);
+        const [removed] = reorderedCities.splice(result.source.index, 1);
+        reorderedCities.splice(result.destination.index, 0, removed);
+
+        setCities(reorderedCities);
     };
 
-    const handleSort = () =>{
-        const citiesClone = [...cities]
-        const temp = citiesClone[dragCity.current]
-
-        citiesClone[dragCity.current] = citiesClone[draggedOverCity.current]
-        citiesClone[draggedOverCity.current] = temp
-
-        setCities(citiesClone)
-    }
-
     return (
-        <div className="flex flex-col w-full bg-widget-dark border-2 rounded-lg border-widget-dark-s p-3 gap-3">
+        <div className="flex flex-col w-full bg-widget-dark border-2 rounded-lg border-widget-dark-s p-3 gap-3 ">
             <h1 className="uppercase text-sm">locations</h1>
             <div className="flex gap-3">
                 <form
@@ -45,20 +45,31 @@ const Cities = () => {
                 </form>
                 <button className="bg-widget-light border-2 border-widget-light-s rounded-lg px-4 py-2 hover:bg-[#e6e6e6] hover:border-[#ffffff] hover:text-base">Edit</button>
             </div>
-            <div className="flex w-full gap-3">
+            <div className="w-full">
                 {
-                    cities.map((city, index) => (
-                        <div className="bg-widget-light border-2 border-widget-light-s rounded-lg px-4 py-2"
-                            key={index}
-                            draggable
-                            onDragStart={() => (dragCity.current = index)}
-                            onDragEnter={() => (draggedOverCity.current = index)}
-                            onDragEnd={handleSort}
-                            onDragOver={(e) => e.preventDefault()}
-                        >
-                            <span className="capitalize"> {city} </span>
-                        </div>
-                    ))
+                    <DragDropContext onDragEnd={onDragEnd}>
+                        <Droppable droppableId="cities" direction="horizontal">
+                            {(provided) => (
+                                <section {...provided.droppableProps} ref={provided.innerRef} className="flex">
+                                    {cities.map((city, index) => (
+                                        <Draggable key={city.id} draggableId={city.id.toString()} index={index}>
+                                            {(provided) => (
+                                                <div
+                                                    className="bg-widget-light border-2 border-widget-light-s rounded-lg w-full px-4 py-2 mr-3"
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    ref={provided.innerRef}
+                                                >
+                                                    <span className="capitalize text-sm"> {city.name} </span>
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    ))}
+                                    {provided.placeholder}
+                                </section>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
                 }
             </div>
         </div>
