@@ -13,8 +13,9 @@ const Forecast = ({city}) => {
                 setWeather(data);
             });
         };
+        console.log("fetching weather")
         fetchWeather();
-    }, []);
+    }, [city]);
 
 
     return (

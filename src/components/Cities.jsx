@@ -2,20 +2,25 @@ import { useRef, useState } from "react";
 import { useCityContext } from "../CityContext";
 import { DragDropContext, Draggable } from "react-beautiful-dnd";
 import { StrictModeDroppable as Droppable } from "../helpers/StrictModeDroppable";
+
+import { MdDragIndicator } from "react-icons/md";
+
 const Cities = () => {
     const { cities, setCities, addCity } = useCityContext();
     const [inputValue, setInputValue] = useState('');
+    const isMobile = window.innerWidth <= 768;
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const trimmedCityName = inputValue.trim();
-        if (trimmedCityName && !cities.some(city => city.name.toLowerCase() === trimmedCityName.toLowerCase())) {
+        if (trimmedCityName && !cities.some(city => city.name.toLowerCase() === trimmedCityName.toLowerCase()) && cities.length<5) {
             addCity(trimmedCityName);
             setInputValue('');
-          } else {
+        } else {
             console.log("City name is empty or already exists.");
-          }
-    };
+        }
+    }
+
     const onDragEnd = (result) => {
         if (!result.destination) return;
 
@@ -24,7 +29,7 @@ const Cities = () => {
         reorderedCities.splice(result.destination.index, 0, removed);
 
         setCities(reorderedCities);
-    };
+    }
 
     return (
         <div className="flex flex-col w-full bg-widget-dark border-2 rounded-lg border-widget-dark-s p-3 gap-3 ">
@@ -48,19 +53,24 @@ const Cities = () => {
             <div className="w-full">
                 {
                     <DragDropContext onDragEnd={onDragEnd}>
-                        <Droppable droppableId="cities" direction="horizontal">
+                        <Droppable droppableId="cities" direction={isMobile ? "vertical":"horizontal"}>
                             {(provided) => (
-                                <section {...provided.droppableProps} ref={provided.innerRef} className="flex">
+                                <section {...provided.droppableProps} ref={provided.innerRef} className="flex flex-col sm:flex-row">
                                     {cities.map((city, index) => (
                                         <Draggable key={city.id} draggableId={city.id.toString()} index={index}>
-                                            {(provided) => (
+                                            {(provided, snapshot) => (
                                                 <div
-                                                    className="bg-widget-light border-2 border-widget-light-s rounded-lg w-full px-4 py-2 mr-3"
+                                                    className={`
+                                                    bg-widget-light border-2 border-widget-light-s rounded-lg w-[20%] px-4 py-2 flex items-center justify-between
+                                                    ${isMobile?(index === cities.length-1 ? '' : ' mb-3'):(index === cities.length-1 ? '' : ' mr-3')}
+                                                    ${snapshot.isDragging ? 'brightness-110' : ''}
+                                                    `}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
                                                 >
                                                     <span className="capitalize text-sm"> {city.name} </span>
+                                                    <MdDragIndicator size={20} />
                                                 </div>
                                             )}
                                         </Draggable>
