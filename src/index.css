@@ -14,3 +14,23 @@
   -ms-overflow-style: none; 
   scrollbar-width: none;
 }
+
+.custom-async-paginate__control {
+  border: none;
+  box-shadow: none;
+  color: red;
+  /* Add other styles as needed */
+}
+
+.custom-async-paginate__menu {
+  /* Add other styles as needed */
+  color: black;
+}
+
+.custom-async-paginate__option {
+  /* Add other styles as needed */
+  color: black;
+}
+.custom-async-paginate__input{
+  color: red;
+}

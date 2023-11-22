@@ -1,19 +1,19 @@
 import getFormattedWeatherData from "../utils/getForcastData";
 import ForecastCardList from "./forecast-components/ForecastCardList";
 import ForeCastMain from "./forecast-components/ForecastMain";
-import ForecastSide from "./forecast-components/ForecastSide";
+import ForecastSideDesktop from "./forecast-components/ForecastSideDesktop";
 import { useState, useEffect } from "react";
 
 const Forecast = ({city}) => {
     const [weather, setWeather] = useState(null);
-
+    
     useEffect(() => {
         const fetchWeather = async () => {
-            await getFormattedWeatherData({ q:city }).then((data) => {
+            await getFormattedWeatherData({ lat: city.lat, lon: city.lon }).then((data) => {
                 setWeather(data);
             });
         };
-        console.log("fetching weather")
+        console.log("fetch")
         fetchWeather();
     }, [city]);
 
@@ -30,7 +30,7 @@ const Forecast = ({city}) => {
                 </div>
                 <div className="w-full sm:w-1/2">
                     {weather ? (
-                        <ForecastSide weather={weather} />
+                        <ForecastSideDesktop weather={weather} />
                     ) : (
                         <p>Loading...</p>
                     )}

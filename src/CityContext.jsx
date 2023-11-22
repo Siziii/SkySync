@@ -4,13 +4,12 @@ const CityContext = createContext();
 
 export const CityProvider = ({ children }) => {
   const [cities, setCities] = useState([
-    { id: 1, name: "Berlin" },
-    { id: 2, name: "Zagreb" },
+    { id: 1, label: "Zagreb, HR", lat: "45.8150", lon: "15.9819" },
+    { id: 2, label: "Berlin, DE", lat: "52.5200", lon: "13.4050" },
   ]);
 
-  const addCity = (cityName) => {
-    const newId = new Date().getTime();
-    const newCity = { id: newId, name: cityName };
+  const addCity = (city) => {
+    const newCity = city;
     setCities([...cities, newCity]);
   };
 

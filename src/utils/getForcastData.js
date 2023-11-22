@@ -5,17 +5,17 @@ const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 const getWeatherData = (infoType, searchParams) => {
     const url = new URL(BASE_URL + "/" + infoType);
-    url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
+    url.search = new URLSearchParams({ ...searchParams, appid: API_KEY }); 
+    console.log(url)
     return fetch(url).then((res) => res.json());
 };
 
 const formatCurrentWeather = (data) => {
     const {
-        coord: { lat, lon },
         main: { temp, feels_like, temp_min, temp_max, humidity, pressure },
         name,
         dt,
-        sys: { country, sunrise, sunset },
+        sys: { sunrise, sunset },
         weather,
         wind: { speed, deg },
     } = data;
@@ -35,8 +35,6 @@ const formatCurrentWeather = (data) => {
     const formattedSunset = formatToLocalTime(sunset, data.timezone, "hh:mm a");
 
     return {
-        lat,
-        lon,
         tempCelsius,
         feels_likeCelsius,
         temp_minCelsius,
@@ -45,7 +43,6 @@ const formatCurrentWeather = (data) => {
         name,
         formattedTime,
         formattedDate,
-        country,
         formattedSunrise,
         formattedSunset,
         details,
@@ -76,12 +73,11 @@ const getFormattedWeatherData = async (searchParams) => {
         "weather",
         searchParams
     ).then(formatCurrentWeather);
+    const formattedForecastWeather = await getWeatherData(
+        "forecast",
+        searchParams
+    ).then(formatForecastWeather);
 
-    const { lat, lon } = formattedCurrentWeather;
-    const formattedForecastWeather = await getWeatherData("forecast", {
-        lat,
-        lon,
-    }).then(formatForecastWeather);
     return { ...formattedForecastWeather, ...formattedCurrentWeather };
 };
 

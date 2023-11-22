@@ -1,7 +1,7 @@
 import { FaArrowDown, FaArrowUp, FaCompass, FaWater, FaWind } from "react-icons/fa";
 import { WiBarometer, WiSunrise, WiSunset } from "react-icons/wi";
 
-const ForecastSide = ({weather}) => {
+const ForecastSideDesktop = ({weather}) => {
     const { temp_minCelsius, temp_maxCelsius,speed,deg,pressure,humidity,formattedSunrise,formattedSunset} = weather;
     return (
         <div className="grid grid-cols-4 grid-rows-2 gap-3">
@@ -78,4 +78,4 @@ const ForecastSide = ({weather}) => {
     );
 }
 
-export default ForecastSide;
+export default ForecastSideDesktop;
