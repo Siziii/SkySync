@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { AsyncPaginate } from "react-select-async-paginate";
 import { GEO_API_URL, geoApiOptions } from "../../utils/getCityData";
-import { useCityContext } from "../../CityContext";
+import { useCityContext } from "../../Contexts/CityContext";
 import { customStyles } from "../../styles/searchStyle";
 
 const CitiesSearch = () => {

@@ -1,4 +1,4 @@
-import { useCityContext } from "../../CityContext";
+import { useCityContext } from "../../Contexts/CityContext";
 import { DragDropContext } from "react-beautiful-dnd";
 import { StrictModeDroppable as Droppable } from "../../helpers/StrictModeDroppable";
 import CityItem from "./CityItem";

@@ -1,6 +1,6 @@
 
 import { MdDelete, MdDragIndicator } from "react-icons/md";
-import { useCityContext } from "../../CityContext";
+import { useCityContext } from "../../Contexts/CityContext";
 import { Draggable } from "react-beautiful-dnd";
 
 const CityItem = ({ index, city, edit, isMobile }) => {

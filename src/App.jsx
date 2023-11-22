@@ -1,6 +1,6 @@
 import Forecast from "./components/Forecast"
 import Cities from "./components/Cities"
-import { useCityContext } from "./CityContext";
+import { useCityContext } from "./Contexts/CityContext";
 
 function App() {
   const { cities } = useCityContext();

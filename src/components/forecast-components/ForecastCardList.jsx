@@ -25,10 +25,9 @@ const ForecastCardList = ({ weather }) => {
 
                         <ForecastCard
                             key={index}
-                            date={forecastItem.date}
-                            time={forecastItem.time}
+                            dt={forecastItem.dt}
                             temp={forecastItem.temp}
-                            desc={forecastItem.desc}
+                            icon={forecastItem.icon}
                             dateVisible={dateVisible}
                         />
                     )

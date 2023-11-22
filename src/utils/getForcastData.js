@@ -5,7 +5,7 @@ const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 const getWeatherData = (infoType, searchParams) => {
     const url = new URL(BASE_URL + "/" + infoType);
-    url.search = new URLSearchParams({ ...searchParams, appid: API_KEY }); 
+    url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
     console.log(url)
     return fetch(url).then((res) => res.json());
 };
@@ -15,41 +15,30 @@ const formatCurrentWeather = (data) => {
         main: { temp, feels_like, temp_min, temp_max, humidity, pressure },
         name,
         dt,
-        sys: { sunrise, sunset },
+        sys: { sunrise, sunset, timezone },
         weather,
         wind: { speed, deg },
     } = data;
 
-    const { main: details, description } = weather[0];
-
-    // Convert temperatures to Celsius
-    const tempCelsius = Math.round(temp - 273.15);
-    const feels_likeCelsius = Math.round(feels_like - 273.15);
-    const temp_minCelsius = Math.round(temp_min - 273.15);
-    const temp_maxCelsius = Math.round(temp_max - 273.15);
-
-    // Format sunrise and sunset times
-    const formattedTime = formatToLocalTime(dt, data.timezone, "hh:mm a");
-    const formattedDate = formatToLocalTime(dt, data.timezone, "dd/MM/yyyy");
-    const formattedSunrise = formatToLocalTime(sunrise, data.timezone, "hh:mm a");
-    const formattedSunset = formatToLocalTime(sunset, data.timezone, "hh:mm a");
+    const { main: details, description, icon } = weather[0];
 
     return {
-        tempCelsius,
-        feels_likeCelsius,
-        temp_minCelsius,
-        temp_maxCelsius,
+        temp,
+        feels_like,
+        temp_min,
+        temp_max,
         humidity,
         name,
-        formattedTime,
-        formattedDate,
-        formattedSunrise,
-        formattedSunset,
+        dt,
         details,
         description,
         speed,
         deg,
         pressure,
+        icon,
+        sunrise,
+        sunset,
+        timezone
     };
 };
 
@@ -57,11 +46,11 @@ const formatForecastWeather = (data) => {
     let { timezone, list } = data;
     const forecastList = list.map((d) => {
         return {
-            date: formatToLocalTime(d.dt, timezone, "dd/MM/yyyy"),
-            time: formatToLocalTime(d.dt, timezone, "hh:mm a"),
-            temp: Math.round(d.main.temp - 273.15),
+            dt: d.dt,
+            temp: d.main.temp,
             desc: d.weather[0].main,
             id: d.weather[0].id,
+            icon: d.weather[0].icon,
         };
     });
     return { timezone, forecastList };
@@ -69,6 +58,7 @@ const formatForecastWeather = (data) => {
 
 
 const getFormattedWeatherData = async (searchParams) => {
+    console.log('Units in getFormattedWeatherData:', searchParams.units);
     const formattedCurrentWeather = await getWeatherData(
         "weather",
         searchParams
@@ -81,10 +71,18 @@ const getFormattedWeatherData = async (searchParams) => {
     return { ...formattedForecastWeather, ...formattedCurrentWeather };
 };
 
-const formatToLocalTime = (
-    secs,
-    zone,
-    format = "cccc, dd LLL yyyy' | Local time: 'hh:mm a"
-) => DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
+export const formatToLocalDate = (secs, zone, format = "dd LLL yyyy") => {
+    return DateTime.fromSeconds(secs).setZone(zone).toFormat(format);
+}
+export const formatToLocalTime = (secs, zone, units) => {
+    const isMetric = units === 'metric';
+    const timeFormat = isMetric ? "HH:mm" : "hh:mm a";
+    return DateTime.fromSeconds(secs).setZone(zone).toFormat(timeFormat);
+}
 
+const iconUrlFromCode = (code) => {
+    return `http://openweathermap.org/img/wn/${code}@2x.png`;
+}
+
+export { iconUrlFromCode };
 export default getFormattedWeatherData
