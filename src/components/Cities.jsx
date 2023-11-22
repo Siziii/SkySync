@@ -9,10 +9,13 @@ const Cities = () => {
     const [edit, setEdit] = useState(false);
     return (
         <div className="flex flex-col w-full bg-widget-dark border-2 rounded-lg border-widget-dark-s p-3 gap-3 ">
-            <div className="flex gap-3">
+            <div className="flex flex-col-reverse sm:flex-row gap-3">
                 <CitiesSearch/>
-                <CitiesEdit edit={edit} setEdit={setEdit}/>
-                <CitiesUnits/>
+                <div className="flex gap-3 justify-end sm:justify-normal">
+                    <CitiesEdit edit={edit} setEdit={setEdit}/>
+                    <CitiesUnits/>
+                </div>
+
             </div>
             
             <CitiesList edit={edit}/>
