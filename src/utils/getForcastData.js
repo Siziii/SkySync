@@ -1,12 +1,11 @@
 import { DateTime } from "luxon";
-const API_KEY = import.meta.env.VITE_APP_API_KEY;
+const API_KEY = import.meta.env.VITE_APP_OWM_API_KEY;
 
 const BASE_URL = "https://api.openweathermap.org/data/2.5";
 
 const getWeatherData = (infoType, searchParams) => {
     const url = new URL(BASE_URL + "/" + infoType);
     url.search = new URLSearchParams({ ...searchParams, appid: API_KEY });
-    console.log(url)
     return fetch(url).then((res) => res.json());
 };
 
@@ -58,7 +57,7 @@ const formatForecastWeather = (data) => {
 
 
 const getFormattedWeatherData = async (searchParams) => {
-    console.log('Units in getFormattedWeatherData:', searchParams.units);
+
     const formattedCurrentWeather = await getWeatherData(
         "weather",
         searchParams
