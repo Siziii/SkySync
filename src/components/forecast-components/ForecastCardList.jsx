@@ -1,7 +1,7 @@
 import ForecastCard from "./ForecastCard";
 import React, { useRef } from "react";
 import { useDraggable } from "react-use-draggable-scroll";
-
+import { formatToLocalDate } from "../../utils/getForcastData";
 const ForecastCardList = ({ weather }) => {
     const ref = useRef();
     const { events } = useDraggable(ref);
@@ -20,7 +20,7 @@ const ForecastCardList = ({ weather }) => {
             >
 
                 {forecastList.map((forecastItem, index) => {
-                    let dateVisible = index === 0 || forecastItem.date !== forecastList[index - 1].date;
+                    let dateVisible = index === 0 || formatToLocalDate(forecastItem.dt) !== formatToLocalDate(forecastList[index - 1].dt);
                     return (
 
                         <ForecastCard
